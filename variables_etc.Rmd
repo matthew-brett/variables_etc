@@ -1,0 +1,292 @@
+---
+title: "Variables and other things"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+## Loading some data from AirBnB
+
+This is an R notebook.
+
+It is a mixture of text, like this, and code, like the "chunk" below.
+
+It allows you to describe your analysis in the same document as the code to do
+your analysis.  You can also embed the results.
+
+The result is that if you give someone a notebook like this, they can repeat
+your analysis exactly, or change it, to explore or to extend what you did.
+
+
+```{r}
+airbnb <- read.csv('amsterdam_airbnb.csv')
+head(airbnb)
+```
+
+## What type of thing do I have?
+
+As we'll see in a bit, `read.csv` is a *function*.  It returns something. We've
+given that thing a name, `airbnb`.
+
+We very often want to know what type of thing we have.  We can ask what type of
+thing we have with the `class` *function*.
+
+```{r}
+class(airbnb)
+```
+
+The type of thing that came back from `read.csv` was a *data frame*.
+
+We will come back to this soon.
+
+In the next few sections, we try to analyze what R makes of the code we type.
+Gradually you will get used to doing this, but it takes some time.
+
+We have to get used to the way that R thinks.
+
+## A comment
+
+Thinking the way R thinks, part 1.
+
+What does R think, when it sees a line that starts with `#`?
+
+It thinks "This is not for me, I can ignore this".
+
+```{r}
+# This doesn't do anything
+# Whatever I type, R ignores it.
+# I can type code, preceded by #, but it does nothing
+# head(airbnb)
+```
+
+Notice there is no output.
+
+## Functions
+
+Thinking the way R thinks, part 2.
+
+Here we display the first six rows of the data (frame):
+
+```{r}
+# The top six rows of the data frame
+head(airbnb)
+```
+
+What is R thinking?  First it sees `head`.  It realizes that `head` is the name for something.  What is it the name of?  We can check ourselves:
+
+```{r}
+# What type of thing is "head"?
+class(head)
+```
+
+It's the name of a function.  R goes to get that function, ready to use.
+
+Then R sees the parenthesis `(`.  It realizes that we want to *call* the function that it just found \- the `head` function.
+
+A function is like a recipe with a name.  It has instructions on what to do.
+There are ingredients, and there is an output, which is a meal.  In the same
+way, the function is a procedure.  It needs ingredients, which are the
+*arguments* to the function. It applies the procedure to the ingredients, and
+returns something.
+
+R knows that the ingredients (arguments) are inside the brackets.  It looks
+there, and finds one argument, `airbnb`. R goes to look what that is, and it finds that it's a *data frame*.
+
+```{r}
+# What type of thing is "airbnb"?
+class(airbnb)
+```
+
+R sends the data frame to the function and applies the procedure. When it has
+finished applying the procedure, it brings back the result.  In our case, the
+result is the first 6 rows of the data frame.
+
+```{r}
+# Apply the "head" function, and show the result
+head(airbnb)
+```
+
+Whenever you see a name, like `head` followed by parentheses, you know this
+code *calls* a *function*, with some *arguments* and returns the result.
+
+## Things that come back from functions, and displaying results
+
+You just saw how we call a function and display a result:
+
+```{r}
+head(airbnb)
+```
+
+R finds what `head` is (a function), finds what `airbnb` is (a data frame), then passes `airbnb` to the function `head`, and returns the result.
+
+In the chunk above, we just displayed the result.  When R returns a result, but we aren't keeping track of the result, it just show it to us.
+
+"Keeping track" means giving the result a name.  We do that, like this:
+
+
+```{r}
+result <- head(airbnb)
+```
+
+Notice, because we gave the result a name, R doesn't display anything.  It has the result now, attached to the *name* `result`.
+
+Can you guess what type of thing `result` is?   Hint: it's the top 6 rows of a
+data frame.
+
+
+```{r}
+class(result)
+```
+
+If we want to display `result`, we can put `result` on its own on the last line of a chunk.  R gets the thing `result` points to, but then sees that we aren't assigning it to anything, so it display it instead:
+
+
+```{r}
+result
+```
+
+## Variables
+
+Above, we have been using *variables*.  A *variable* is a name that point to
+some value.  It's a label that we can use to refer to something.  We choose the name to be a good label, so, when we read the label, we have a good idea of thing it refers to.
+
+At the moment `result` is a name that point to the first six rows of the data
+frame.
+
+We can make simpler variables, as you have already done in your practical:
+
+```{r}
+# An assignment statement
+a <- 1
+```
+
+Let us go through this slowly.   When R sees this, it thinks:
+
+* Aha, the `<-` means this is an *assignment*.
+* I'm expecting a variable name (label) on the left of `<-`.
+* I'm expecting *something giving a value* on the right of `<-`
+* In all "set the variable `a` to have the value `1`.
+
+We can see the value of `a` by using it on it's own in a line.  This finds the value that `a` refers to, and shows it to us:
+
+```{r}
+a
+```
+
+In the last list, I use *something giving a value*.  The technical term for this is an *expression*.  An *expression* is something R can run, that results in a value.
+
+For example, consider this:
+
+
+```{r}
+b <- 2 + 3
+```
+
+Read this as "set the variable `b` to have \- the result of evaluating `2 + 3`.  What value is this?
+
+
+```{r}
+b
+```
+
+What do you think you will get for this?
+
+```{r}
+c <- b + a
+```
+
+Read this as "set the variable `c` to have \- the result of evaluating `a + b`. `b` evaluates to its value: 5. `a` evaluates to its value: 1.  The whole expression evaluates to 1 + 5, giving the value 6.
+
+```{r}
+c
+```
+
+## Variables, data frames and columns
+
+You have already seen that we can get the column of a data frame by using the
+`$` syntax.
+
+For example, we can display all the values of the `price` column in the `airbnb` data frame, like this:
+
+```{r}
+airbnb$price
+```
+
+What is R thinking here?   First it looks to see what `airbnb` is, and it finds
+that it refers to a data frame.  Next is sees the `$`.  It knows that the `$`
+means, get something from the thing on the left.  The thing on the left is the
+`airbnb` data frame.  Then it looks to see what is at the right of the `$`.  It
+is `price`.  It goes to look for something called `price` in the data frame.
+In particular, it goes to look for a `price` column in the data frame.  If it
+finds it, R gives us back a new value, which is \- a sequence of all the values
+for the `price` column.
+
+What kind of thing is this new value, containing all the columns?
+
+```{r}
+my_variable <- airbnb$price
+```
+
+```{r}
+class(my_variable)
+```
+
+What do you think would happen if I looked for a column that was not there?
+
+```{r}
+another_variable <- airbnb$not_a_column
+```
+
+Let's work through it slowly.  R finds the `airbnb` value; it's a data frame.
+It sees the dollar.  It tries to find something called `not_a_column` in the
+data frame.  It doesn't find anything matching.  It returns a value to tell us
+"I couldn't find anything like that in `airbnb`".
+
+```{r}
+another_variable
+```
+
+## Some exercises
+
+Now consider these chunks:
+
+```{r}
+my_variable <- airbnb$price
+```
+
+```{r}
+my_variable$property_type
+```
+
+What happened there?  Work through the logic above, and explain what happened.
+
+How about:
+
+```{r}
+airbnb$my_variable
+```
+
+What happened there?  Work through the logic above, and explain what happened.
+
+Back to variables. Consider this:
+
+```{r}
+x <- 2
+```
+
+```{r}
+y <- x * 3
+```
+
+```{r}
+y
+```
+
+So far so good.  Now I do:
+
+
+```{r}
+x <- 4
+```
+
+What value does `y` have now?  Look through the logic in the variable section above, and work out what R is doing for each step.  Is `y` the same, or is it different, from the value you saw above?  Explain to your neighbour.
