@@ -17,6 +17,8 @@ your analysis.  You can also embed the results.
 The result is that if you give someone a notebook like this, they can repeat
 your analysis exactly, or change it, to explore or to extend what you did.
 
+In our first R code chunk, we load some data about [AirBnB listings in
+Amsterdam](http://insideairbnb.com/get-the-data.html), from February 2021.
 
 ```{r}
 airbnb <- read.csv('amsterdam_airbnb.csv')
